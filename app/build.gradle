@@ -8,7 +8,7 @@ android {
         minSdkVersion 18
         targetSdkVersion 26
         versionCode 231110
-        versionName '23.11.10'
+        versionName '23.11.11'
         multiDexEnabled true
         //设置room的Schema的位置
         javaCompileOptions {
