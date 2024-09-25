@@ -1,12 +1,5 @@
 package com.github.tvbox.osc.ui.activity;
 
-import android.app.Activity;
-import com.github.tvbox.osc.ui.xupdate.Constants;
-import com.hjq.permissions.OnPermissionCallback;
-import com.hjq.permissions.Permission;
-import com.hjq.permissions.XXPermissions;
-import com.xuexiang.xupdate.XUpdate;
-import com.github.tvbox.osc.ui.xupdate.CustomUpdatePrompter;
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
@@ -73,7 +66,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import android.app.Activity;
+import com.github.tvbox.osc.ui.xupdate.Constants;
+import com.hjq.permissions.OnPermissionCallback;
+import com.hjq.permissions.Permission;
+import com.hjq.permissions.XXPermissions;
+import com.xuexiang.xupdate.XUpdate;
+import com.github.tvbox.osc.ui.xupdate.CustomUpdatePrompter;
 import me.jessyan.autosize.utils.AutoSizeUtils;
 
 public class HomeActivity extends BaseActivity {
