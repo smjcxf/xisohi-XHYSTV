@@ -473,7 +473,7 @@ public class SourceViewModel extends ViewModel {
     }
     // detailContent
     public void getDetail(String sourceKey, String urlid) {
-    	if (urlid.startsWith("push://") && ApiConfig.get().getSource("push_agent") != null) {
+    	if (urlid.startsWith("push://") && ApiConfig.get().getSource("push_agent") != null) {           
             String pushUrl = urlid.substring(7);
             if (pushUrl.startsWith("b64:")) {
                 try {
@@ -488,7 +488,7 @@ public class SourceViewModel extends ViewModel {
             urlid = pushUrl;
         }
         String id = urlid;
-
+    
         SourceBean sourceBean = ApiConfig.get().getSource(sourceKey);
         int type = sourceBean.getType();
         if (type == 3) {
@@ -921,7 +921,7 @@ public class SourceViewModel extends ViewModel {
             }
         }
     }
-
+    
     private AbsXml checkPush(AbsXml data) {
         if (data.movie != null && data.movie.videoList != null && data.movie.videoList.size() > 0) {
             Movie.Video video = data.movie.videoList.get(0);
