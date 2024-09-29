@@ -93,57 +93,6 @@ public class App extends MultiDexApplication {
             Hawk.put(HawkConfig.SEARCH_VIEW, 2);
         }
     }
-
-
-    /**
-     * 初始化更新组件服务
-     */
-    private void initUpdate() {
-        XUpdate.get()
-                .debug(false)
-                //默认设置只在wifi下检查版本更新
-                .isWifiOnly(false)
-                //默认设置使用get请求检查版本
-                .isGet(true)
-                //默认设置非自动模式，可根据具体使用配置
-                .isAutoMode(false)
-//                .setApkCacheDir("/storage/sdcard0/Android/data/ta.hai/files")
-                .setApkCacheDir(getDiskCachePath(instance))
-                //设置默认公共请求参数
-                .param("VersionCode", UpdateUtils.getVersionCode(this))
-                .param("VersionName", getPackageName())
-                //设置版本更新出错的监听
-                .setOnUpdateFailureListener(new OnUpdateFailureListener() {
-                    @Override
-                    public void onFailure(UpdateError error) {
-                        error.printStackTrace();
-                        // 对不同错误进行处理
-//                        if (error.getCode() != CHECK_NO_NEW_VERSION) {
-////                            ToastUtils.showShort(application,error.toString() + "");
-//                        }
-                        updateString(error);
-                    }
-                })
-                //设置是否支持静默安装，默认是true
-                .supportSilentInstall(true)
-                //这个必须设置！实现网络请求功能。
-                .setIUpdateHttpService(new UpdateHttpService())
-                //这个必须初始化
-                .init(this);
-
-    }
-
-    /**
-     * 获取cache路径
-     */
-    public static String getDiskCachePath(Context context) {
-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !Environment.isExternalStorageRemovable()) {
-            return context.getExternalCacheDir().getPath();
-        } else {
-            return context.getCacheDir().getPath();
-        }
-    }
-
     public static App getInstance() {
         return instance;
     }
@@ -186,7 +135,41 @@ public class App extends MultiDexApplication {
         return dashData;
     }
 
-    public void updateString(UpdateError error) {
+    /**
+     * 初始化更新组件服务
+     */
+    private void initUpdate() {
+        XUpdate.get()
+                .debug(true)
+                .isWifiOnly(false) //默认设置只在wifi下检查版本更新
+                .isGet(true)  //默认设置使用get请求检查版本
+                .isAutoMode(false) //默认设置非自动模式，可根据具体使用配置
+                .setApkCacheDir(getDiskCachePath(instance))
+                .param("VersionCode", UpdateUtils.getVersionCode(this))
+                .param("VersionName", getPackageName())
+                .setOnUpdateFailureListener(new OnUpdateFailureListener() {
+                    @Override
+                    public void onFailure(UpdateError error) {
+                        error.printStackTrace();
+                        updateString(error);
+                    } //设置版本更新出错的监听
+                })
+                .supportSilentInstall(false) //设置是否支持静默安装，默认是true
+                .setIUpdateHttpService(new UpdateHttpService()) // 实现网络请求功能。
+                .init(this); // 这个必须初始化
+    }
+    /**
+     * 获取cache路径
+     */
+    private static String getDiskCachePath(Context context) {
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !Environment.isExternalStorageRemovable()) {
+            return context.getExternalCacheDir().getPath();
+        } else {
+            return context.getCacheDir().getPath();
+        }
+    }
+
+    private void updateString(UpdateError error) {
         switch (error.getCode()) {
             case 2000:
                 // ToastUtils.showShort("查询更新失败");
@@ -198,7 +181,7 @@ public class App extends MultiDexApplication {
                 break;
             case 2002:
                 // ToastUtils.showShort("没有网络");
-                Toast.makeText(this, getString(R.string.update_code_2001), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.update_code_2002), Toast.LENGTH_SHORT).show();
                 break;
             case 2003:
                 // ToastUtils.showShort( "正在进行版本更新");
@@ -206,7 +189,7 @@ public class App extends MultiDexApplication {
                 break;
             case 2004:
                 // ToastUtils.showShort( "无最新版本");
-                Toast.makeText(this, getString(R.string.update_code_2004), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, getString(R.string.update_code_2004), Toast.LENGTH_SHORT).show();
                 break;
             case 2005:
                 // ToastUtils.showShort( "版本检查返回空");
@@ -218,7 +201,7 @@ public class App extends MultiDexApplication {
                 break;
             case 2007:
                 // ToastUtils.showShort( "已经被忽略的版本");
-                Toast.makeText(this, getString(R.string.update_code_2007), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, getString(R.string.update_code_2007), Toast.LENGTH_SHORT).show();
                 break;
             case 2008:
                 // ToastUtils.showShort( "应用下载的缓存目录为空");
@@ -246,5 +229,4 @@ public class App extends MultiDexApplication {
                 break;
         }
     }
-
 }
